@@ -1,0 +1,23 @@
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+
+# Local cache & large data files (keeps repo lightweight)
+data/cache/
+*.parquet
+*.csv.gz
+
+# macOS / IDE
+.DS_Store
+.idea/
+.vscode/
+*.swp
