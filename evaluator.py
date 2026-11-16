@@ -24,6 +24,7 @@ def evaluate_detector(
     X_train: np.ndarray,
     X_test: np.ndarray,
     y_test: np.ndarray,
+    y_train: np.ndarray = None,
     alert_budgets: List[float] = [0.005, 0.01, 0.02],  # 0.5%, 1%, 2%
 ) -> Dict[str, Any]:
     """
@@ -31,7 +32,10 @@ def evaluate_detector(
     """
     # 1. Measure Training Time
     t0 = time.perf_counter()
-    detector.fit(X_train)
+    if y_train is not None:
+        detector.fit(X_train, y_train)
+    else:
+        detector.fit(X_train)
     train_time_sec = time.perf_counter() - t0
 
     # 2. Measure Inference Latency

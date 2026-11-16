@@ -51,6 +51,32 @@ This repository systematically benchmarks four algorithmic families across two d
 
 ---
 
+### 3. Step 1: Supervised LightGBM Benchmark (Head-to-Head Comparison)
+
+| Dataset | Model | Type | PR-AUC | ROC-AUC | Recall @ 0.5% Alert | Recall @ 1.0% Alert | Recall @ 2.0% Alert | Latency (ms / 1k) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Synthetic** | **Isolation Forest** | Unsupervised | 0.5458 | 0.9840 | 14.35% | 36.57% | 65.28% | 4.2 ms |
+| **Synthetic** | **Supervised LightGBM** | Supervised | **0.9644** | **0.9835** | **48.15%** | **61.11%** | **95.37%** | **2.3 ms** |
+| **IEEE-CIS** | **Isolation Forest** | Unsupervised | 0.0380 | 0.6099 | 1.41% | 1.77% | 2.12% | 4.4 ms |
+| **IEEE-CIS** | **Supervised LightGBM** | Supervised | **0.5138** | **0.8765** | **16.61%** | **29.33%** | **44.52%** | **4.3 ms** |
+
+![Step 1 Supervised Comparison](results/step1_supervised_vs_iforest.png)
+
+---
+
+## 🔬 Data Gap Diagnostics: Why Unsupervised Anomaly Detection Drops in Real Data
+
+An empirical geometric comparison between Synthetic behavioral drift and the IEEE-CIS real-world dataset reveals the exact root causes behind the unsupervised performance drop:
+
+| Diagnostic Metric | Synthetic Data | IEEE-CIS Real-World | Operational Consequence |
+| :--- | :---: | :---: | :--- |
+| **Mean KS Divergence** | 0.4326 | 0.1442 (3x lower) | Real fraud and legitimate feature distributions overlap heavily. |
+| **Camouflaged Fraud (% hiding inside IQR)** | **0.00%** | **71.33%** | **Over 71% of real fraud hides completely inside normal user quartiles.** |
+| **Tail Contamination (% of top 1% outliers that are benign)** | 69.88% | **95.87%** | **In production, ~96% of extreme outliers are benign VIPs/travelers.** |
+| **Distance Ratio from Distribution Center** | **10.95x** | **1.31x** | Real fraud is only 1.3x from the average user, whereas synthetic fraud is 11x away. |
+
+---
+
 ## 🔍 Key Findings & Takeaways
 
 1. **Isolation Forest is the strongest unsupervised screener:**

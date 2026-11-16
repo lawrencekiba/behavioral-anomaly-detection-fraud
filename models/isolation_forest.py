@@ -14,6 +14,7 @@ class IsolationForestDetector(BaseAnomalyDetector):
         n_estimators: int = 150,
         max_samples: str = "auto",
         contamination: float = 0.02,
+        n_jobs: int = 1,
         random_state: int = 42,
     ):
         super().__init__(name="Isolation Forest")
@@ -22,7 +23,7 @@ class IsolationForestDetector(BaseAnomalyDetector):
             max_samples=max_samples,
             contamination=contamination,
             random_state=random_state,
-            n_jobs=-1,
+            n_jobs=n_jobs,
         )
 
     def fit(self, X: np.ndarray, y: np.ndarray = None) -> "IsolationForestDetector":

@@ -1,0 +1,54 @@
+{
+  "synthetic": {
+    "dataset_name": "Synthetic Dataset",
+    "n_samples": 30000,
+    "n_features": 9,
+    "fraud_rate": 0.018,
+    "mean_ks_stat": 0.432567298412323,
+    "max_ks_stat": 0.7596062421798706,
+    "top_features_by_ks": [
+      [
+        "is_new_device",
+        0.7596062421798706
+      ],
+      [
+        "is_new_cat",
+        0.7291733026504517
+      ],
+      [
+        "amount_zscore",
+        0.6611111164093018
+      ]
+    ],
+    "avg_fraud_in_p99_tails": 0.3012301437801001,
+    "avg_legit_in_p99_tails": 0.6987698562198998,
+    "camouflaged_fraud_pct": 0.0,
+    "relative_outlier_distance": 10.949983596801758
+  },
+  "ieee_cis": {
+    "dataset_name": "IEEE-CIS Real-World",
+    "n_samples": 25000,
+    "n_features": 31,
+    "fraud_rate": 0.02832,
+    "mean_ks_stat": 0.1441827267408371,
+    "max_ks_stat": 0.2915586531162262,
+    "top_features_by_ks": [
+      [
+        "ProductCD_freq",
+        0.2915586531162262
+      ],
+      [
+        "C5",
+        0.2763863205909729
+      ],
+      [
+        "card6_freq",
+        0.26532137393951416
+      ]
+    ],
+    "avg_fraud_in_p99_tails": 0.04128584015088164,
+    "avg_legit_in_p99_tails": 0.9587141598491183,
+    "camouflaged_fraud_pct": 0.713276836158192,
+    "relative_outlier_distance": 1.3056740760803223
+  }
+}
