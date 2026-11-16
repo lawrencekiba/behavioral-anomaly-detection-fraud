@@ -64,6 +64,30 @@ This repository systematically benchmarks four algorithmic families across two d
 
 ---
 
+### 4. Step 2: The Hybrid Pipeline (4-Way Paradigm Ablation)
+
+We systematically benchmarked whether appending unsupervised anomaly signals (`iForest_Score`, `Autoencoder_MSE`) into LightGBM improves detection:
+
+| Dataset | Model Architecture | Paradigm | PR-AUC | ROC-AUC | Recall @ 0.5% Alert | Recall @ 1.0% Alert | Recall @ 2.0% Alert | Latency (ms / 1k) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Synthetic** | **Isolation Forest** | Unsupervised | 0.4952 | 0.9833 | 12.04% | 34.72% | 64.35% | 2.9 ms |
+| **Synthetic** | **Supervised LightGBM** | Supervised | 0.9644 | 0.9835 | **48.15%** | **61.11%** | 95.37% | **1.0 ms** |
+| **Synthetic** | **Hybrid (LightGBM + iForest)** | Hybrid | 0.9678 | **0.9858** | 42.13% | 58.33% | 95.37% | 4.7 ms |
+| **Synthetic** | **Hybrid (LightGBM + iForest + AE)** | Hybrid | **0.9691** | 0.9856 | 37.04% | 55.56% | **96.30%** | 5.2 ms |
+| **IEEE-CIS** | **Isolation Forest** | Unsupervised | 0.0377 | 0.6104 | 1.77% | 1.77% | 2.12% | 2.9 ms |
+| **IEEE-CIS** | **Supervised LightGBM** | Supervised | **0.5138** | 0.8765 | **16.61%** | **29.33%** | **44.52%** | **1.7 ms** |
+| **IEEE-CIS** | **Hybrid (LightGBM + iForest)** | Hybrid | 0.4875 | **0.8789** | 15.55% | 28.98% | 43.82% | 4.4 ms |
+| **IEEE-CIS** | **Hybrid (LightGBM + iForest + AE)** | Hybrid | 0.4829 | 0.8737 | 16.25% | 28.98% | 41.70% | 4.6 ms |
+
+![Hybrid Benchmark](results/hybrid_benchmark.png)
+
+#### Permutation Feature Importance Analysis (Test PR-AUC Impact)
+* **On Synthetic:** `iForest_Score` ranked **#1 out of 11 features** (+0.5530 impact), and `Autoencoder_MSE` ranked **#2** (+0.1026 impact).
+* **On IEEE-CIS:** Even in noisy real data, `iForest_Score` ranked **#4 out of 33 features** (+0.0893 impact), and `Autoencoder_MSE` ranked **#9**.
+* **Key Takeaway:** Unsupervised anomaly scores provide strong signal, but without prior user cohort segmentation, appending raw global scores to real-world data introduces slight variance due to benign VIP tail outliers (95.9% of top 1% outliers are legitimate users).
+
+---
+
 ## 🔬 Data Gap Diagnostics: Why Unsupervised Anomaly Detection Drops in Real Data
 
 An empirical geometric comparison between Synthetic behavioral drift and the IEEE-CIS real-world dataset reveals the exact root causes behind the unsupervised performance drop:
